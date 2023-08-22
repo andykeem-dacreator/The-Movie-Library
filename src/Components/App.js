@@ -12,16 +12,26 @@ const App = ()=> {
   const dispatch = useDispatch();
   const API_URL = 'https://api.themoviedb.org/3/'
   const fetchMovies = async () => {
-    const data = await axios.get(`${API_URL}/movie/popular`, {
+    const movieData = await axios.get(`${API_URL}/movie/changes`, {
       params: {
         api_key: process.env.REACT_APP_MOVIE_API_KEY 
       }
     })
-    console.log('data', data)
+    console.log('movie data', movieData)
+  }
+
+  const fetchShows = async () => {
+    const showData = await axios.get(`${API_URL}/tv/changes`, {
+      params: {
+        api_key: process.env.REACT_APP_MOVIE_API_KEY
+      }
+    })
+    console.log('show data', showData)
   }
 
   useEffect(()=> {
     fetchMovies();
+    fetchShows();
   })
 
   // useEffect(()=> {

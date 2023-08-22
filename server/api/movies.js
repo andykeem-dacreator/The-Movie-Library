@@ -9,7 +9,7 @@ const API_URL = 'https://api.themoviedb.org/3/';
 
 router.get('/', async (req, res) => {
   try {
-    const movieData = await axios.get(`${API_URL}/movie/changes`, {
+    const movieData = await axios.get(`${API_URL}/discover/movie`, {
       params: {
         api_key: process.env.REACT_APP_MOVIE_API_KEY,
       },

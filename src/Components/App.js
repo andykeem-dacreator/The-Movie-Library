@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import Home from './Home';
 import Login from './Login';
+import MovieCard from './MovieCard';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { loginWithToken, fetchMovies, fetchShows } from '../store';
@@ -42,6 +43,9 @@ const App = ()=> {
   return (
     <div>
       <h1>FS App Template</h1>
+      <div>
+        <MovieCard />
+      </div>
       {/* {
         auth.id ? <Home /> : <Login />
       }

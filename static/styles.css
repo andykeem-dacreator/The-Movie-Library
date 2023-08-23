@@ -1,8 +1,16 @@
 body {
   font-family: verdana;
+  margin: 0;
+  /* background-color: #090A0E;
+  color: #ffffff; */
 }
 
-form {
+* {
+  box-sizing: border-box;
+}
+
+
+/* form {
   display: flex;
   flex-direction: column;
 }
@@ -14,10 +22,29 @@ form > * {
 nav {
   display: flex;
   justify-content: space-around;
-}
+} */
 
 .container {
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  justify-content: center;
+  align-content: start;
+}
+
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.movie-cover {
+  width: 100%;
+  /* height: auto; */
+  /* object-fit: cover; */
+  /* margin-bottom: 10px; */
 }

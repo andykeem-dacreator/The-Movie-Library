@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Home from './Home';
 import Login from './Login';
@@ -12,24 +12,7 @@ import { Link, Routes, Route } from 'react-router-dom';
 const App = ()=> {
   const { auth } = useSelector(state => state);
   const dispatch = useDispatch();
-  // const API_URL = 'https://api.themoviedb.org/3/'
-  // const fetchMovies = async () => {
-  //   const movieData = await axios.get(`${API_URL}/movie/changes`, {
-  //     params: {
-  //       api_key: process.env.REACT_APP_MOVIE_API_KEY 
-  //     }
-  //   })
-  //   console.log('movie data', movieData)
-  // }
-
-  // const fetchShows = async () => {
-  //   const showData = await axios.get(`${API_URL}/tv/changes`, {
-  //     params: {
-  //       api_key: process.env.REACT_APP_MOVIE_API_KEY
-  //     }
-  //   })
-  //   console.log('show data', showData)
-  // }
+  const [searchKey, setSearchKey] = useState('')
 
   useEffect(()=> {
     dispatch(fetchMovies());
@@ -40,9 +23,21 @@ const App = ()=> {
   //   dispatch(loginWithToken());
   // }, []);
 
+  const searchMovies = (e) => {
+    e.preventDefault()
+  }
+
   return (
-    <div>
-      <h1>FS App Template</h1>
+    <div className='App'>
+      <header>
+        <h1>The Movie Library</h1>
+
+        <form onSubmit={searchMovies}>
+          <input type='text' onChange={(e) => setSearchKey(e.target.value)}/>
+          <button type={'submit'}>Search</button>
+        </form>
+      </header>
+      {searchKey}
       <div>
         <MovieCard />
       </div>

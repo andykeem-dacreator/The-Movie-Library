@@ -8,11 +8,11 @@ const MovieCard = () => {
   const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500'
 
   return (
-    <div>
+    <div className='container'>
       {movies.map((movie) => {
         return (
-          <div className='container' key={movie.id}>
-            {movie.poster_path ? <img src={`${IMAGE_PATH}${movie.poster_path}`} alt=''/>
+          <div className='movie-card' key={movie.id}>
+            {movie.poster_path ? <img className='movie-cover' src={`${IMAGE_PATH}${movie.poster_path}`} alt=''/>
               : null
             }
           

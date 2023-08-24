@@ -7,12 +7,16 @@ const movies = (state = [], action) => {
   return state;
 };
 
-export const fetchMovies = () => {
+export const fetchMovies = (searchQuery) => {
   return async (dispatch) => {
     try {
       const API_KEY = process.env.REACT_APP_MOVIE_API_KEY; 
       const API_URL = 'https://api.themoviedb.org/3';
-      const endpoint = `${API_URL}/discover/movie?api_key=${API_KEY}`;
+      let endpoint = `${API_URL}/discover/movie?api_key=${API_KEY}`;
+
+      if (searchQuery) {
+        endpoint = `${API_URL}/search/movie?api_key=${API_KEY}&query=${searchQuery}`;
+      }
 
       const response = await axios.get(endpoint);
       dispatch({ type: 'SET_MOVIES', movies: response.data.results });

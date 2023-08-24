@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 const MovieCard = () => {
 
   const { movies } = useSelector((state) => state);
-  console.log(movies);
+  console.log('movies', movies);
   const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500'
 
   return (

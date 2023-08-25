@@ -1,8 +1,8 @@
 body {
   font-family: verdana;
   margin: 0;
-  /* background-color: #090A0E;
-  color: #ffffff; */
+  background: linear-gradient(45deg, #367873, black);
+  color: #ffffff;
 }
 
 * {
@@ -24,9 +24,18 @@ nav {
   justify-content: space-around;
 } */
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 15px;
+
+  background-color: rgba(211, 211, 211, 0.1); 
 
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -44,11 +53,23 @@ nav {
 
 .movie-cover {
   width: 100%;
+  min-height: 416.25px;
   /* height: auto; */
   /* object-fit: cover; */
   /* margin-bottom: 10px; */
 }
 
+.posterless {
+  width: 100%;
+  min-height: 416.25px;
+  background-color: gray;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Show Card */
 .show-card {
   display: flex;
   flex-direction: column;

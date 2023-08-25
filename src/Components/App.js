@@ -132,7 +132,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <header>
+      <header className='header'>
         <h1>The Movie Library</h1>
 
         <form onSubmit={searchMovies}>
@@ -148,10 +148,10 @@ const App = () => {
         </form>
       </header>
       <div>
-        {/* Render the filtered movies here */}
-        {filtered.map((movie) => (
+        {/* {filtered.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
-        ))}
+        ))} */}
+        <MovieCard />
       </div>
     </div>
   );

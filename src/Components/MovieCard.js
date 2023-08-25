@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 const MovieCard = () => {
 
   const { movies } = useSelector((state) => state);
-  console.log('movies', movies);
+  // console.log('movies', movies);
   const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500'
 
   return (
@@ -13,7 +13,10 @@ const MovieCard = () => {
         return (
           <div className='movie-card' key={movie.id}>
             {movie.poster_path ? <img className='movie-cover' src={`${IMAGE_PATH}${movie.poster_path}`} alt=''/>
-              : null
+              : 
+              <div className='posterless'>
+                Movie Poster Pending
+              </div>
             }
           
             <h5 className ='movie-title'>{movie.title}</h5>

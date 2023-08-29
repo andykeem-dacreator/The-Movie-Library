@@ -97,18 +97,37 @@ import MovieCard from './MovieCard';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovies, fetchShows } from '../store';
 import { Link, Routes, Route, useParams } from 'react-router-dom';
+import YouTube from 'react-youtube';
 
 const App = () => {
   const { auth, movies, shows } = useSelector((state) => state);
   const { filterString } = useParams();
+  const API_URL = 'https://api.themoviedb.org/3';
+  const IMAGE_PATH = 'https://image.tmdb.org/t/p/original';
   const filter = filterString ? JSON.parse(filterString) : {};
   const dispatch = useDispatch();
   const [searchKey, setSearchKey] = useState('');
+  const [selectedMovie, setSelectedMovie] = useState({});
+
+  const fetchMovie = async () => {
+    const {data} = await axios.get(`${API_URL}/${id}`, {
+      params: {
+        api_key: process.env.REACT_APP_MOVIE_API_KEY,
+      }
+    })
+  }
 
   useEffect(() => {
     dispatch(fetchMovies());
     dispatch(fetchShows());
   }, []);
+
+  useEffect(() => {
+    if (movies.length > 0) {
+      setSelectedMovie(movies[0]);
+      console.log('Selected Movie:', movies[0]);
+    }
+  }, [movies]);
 
   const searchMovies = async (ev) => {
     ev.preventDefault();
@@ -120,15 +139,10 @@ const App = () => {
     }
   }
 
-  const filtered = movies.filter((movie) => {
-    if (filter.search) {
-      if (movie.title && movie.title.toLowerCase().includes(filter.search.toLowerCase())) {
-        return true;
-      }
-      return false;
-    }
-    return true;
-  });
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+    console.log('Selected Movie', movie)
+  };
 
   return (
     <div className="App">
@@ -147,11 +161,25 @@ const App = () => {
           <button type="submit">Search</button>
         </form>
       </header>
-      <div>
+      <div className='hero' style={{backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`}}>
+        <div className='main-info'>
+          {/* <img className='movie-backdrop' src={`${IMAGE_PATH}${selectedMovie.backdrop_path}`} alt=''/> */}
+          <YouTube
+
+          />
+          <button className='trailer-play-button'>Play</button>
+          <h1 className='hero-movie-title'>{selectedMovie.title}</h1>
+          <p className='hero-movie-overview'>{selectedMovie.overview ? selectedMovie.overview : null}</p>
+        </div>
+      </div>
+      <div >
         {/* {filtered.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))} */}
-        <MovieCard />
+        <MovieCard onMovieClick={handleMovieClick} />
+      </div>
+      <div className='trailer'>
+
       </div>
     </div>
   );

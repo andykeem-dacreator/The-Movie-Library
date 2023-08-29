@@ -44,6 +44,12 @@ nav {
   align-content: start;
 }
 
+.header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
 .movie-card {
   display: flex;
   flex-direction: column;
@@ -67,6 +73,29 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.main-info {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.hero {
+  min-height: 500px;
+  background-position: top center;
+  background-size: cover;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-movie-title {
+  font-size: 70px;
+  margin: 0px
+}
+
+.main-info {
+  padding-bottom: 75px;
 }
 
 /* Show Card */

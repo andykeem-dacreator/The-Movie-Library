@@ -31,7 +31,7 @@ nav {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 15px;
 
@@ -47,7 +47,7 @@ nav {
 .header {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 0px;
 }
 
 .movie-card {
@@ -59,7 +59,7 @@ nav {
 
 .movie-cover {
   width: 100%;
-  min-height: 416.25px;
+  min-height: auto;
   /* height: auto; */
   /* object-fit: cover; */
   /* margin-bottom: 10px; */
@@ -67,7 +67,7 @@ nav {
 
 .posterless {
   width: 100%;
-  min-height: 416.25px;
+  min-height: 530px;
   background-color: gray;
   color: black;
   display: flex;
@@ -82,21 +82,48 @@ nav {
 }
 
 .hero {
-  min-height: 500px;
+  min-height: 600px;
   background-position: top center;
-  background-size: cover;
+  /* background-size: cover; */
   display: flex;
   align-items: flex-end;
 }
 
 .hero-movie-title {
   font-size: 70px;
-  margin: 0px
+  margin: 0px;
+  background-color: rgba(0, 0, 0, 0.2); 
+
+}
+
+.hero-movie-overview {
+  background-color: rgba(0, 0, 0, 0.2); 
+
 }
 
 .main-info {
   padding-bottom: 75px;
 }
+
+.footer {
+  font-size: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.359);
+}
+
+.footer span {
+  margin-left: 30px;
+
+}
+
+.footer img {
+  margin-left: 30px;
+
+}
+
 
 /* Show Card */
 .show-card {

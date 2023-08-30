@@ -3,86 +3,111 @@
 // import Home from './Home';
 // import Login from './Login';
 // import MovieCard from './MovieCard';
-// import ShowCard from './ShowCard';
-
 // import { useSelector, useDispatch } from 'react-redux';
-// import { loginWithToken, fetchMovies, fetchShows } from '../store';
+// import { fetchMovies, fetchShows } from '../store';
 // import { Link, Routes, Route, useParams } from 'react-router-dom';
+// import YouTube from 'react-youtube';
 
-
-// const App = ()=> {
-//   const { auth, movies, shows } = useSelector(state => state);
+// const App = () => {
+//   const { auth, movies, shows } = useSelector((state) => state);
 //   const { filterString } = useParams();
+//   const API_URL = 'https://api.themoviedb.org/3';
+//   const IMAGE_PATH = 'https://image.tmdb.org/t/p/original';
 //   const filter = filterString ? JSON.parse(filterString) : {};
 //   const dispatch = useDispatch();
-//   const [searchKey, setSearchKey] = useState('')
 
-//   useEffect(()=> {
+//   const [searchKey, setSearchKey] = useState('');
+//   const [selectedMovie, setSelectedMovie] = useState({});
+//   const [runTrailer, setRunTrailer] = useState(false);
+
+//   const fetchMovie = async (id) => {
+//     const {data} = await axios.get(`${API_URL}/movie/${id}`, {
+//       params: {
+//         api_key: process.env.REACT_APP_MOVIE_API_KEY,
+//       }
+//     })
+//     return data;
+//   }
+
+//   const selectMovie = async (movie) => {
+//     const data = await fetchMovie(movie.id);
+//     setSelectedMovie(data);
+//   };
+  
+
+//   useEffect(() => {
 //     dispatch(fetchMovies());
 //     dispatch(fetchShows());
 //   }, []);
 
-//   // useEffect(()=> {
-//   //   dispatch(loginWithToken());
-//   // }, []);
+//   useEffect(() => {
+//     if (movies.length > 0) {
+//       setSelectedMovie(movies[0]);
+//       console.log('Selected Movie:', movies[0]);
+//     }
+//   }, [movies]);
 
-//   const searchMovies = (ev) => {
-//     const _filter = { ...filter };
-//     if (ev.target.name === 'search') {
-//       if (ev.target.value) {
-//         _filter.search = ev.target.value;
-//       } else {
-//         delete _filter.search;
-//       }
-//       setSearchKey(ev.target.value);
-//       dispatch(fetchMovies(_filter));
+//   const searchMovies = async (ev) => {
+//     ev.preventDefault();
+
+//     try {
+//       dispatch(fetchMovies(searchKey));
+//     } catch (error) {
+//       console.error('Error searching movies:', error);
 //     }
 //   }
 
-//   const filtered = movies.filter(movie => {
-//     if (filter.search) {
-//       if (
-//         (movie.title && movie.title.includes(filter.search.toLowerCase())) 
-//       ) {
-//         return true;
-//       }
-//       return false;
-//     }
-//     return true;
-//   });
+//   const handleMovieClick = (movie) => {
+//     setSelectedMovie(movie);
+//     console.log('Selected Movie', movie)
+//   };
 
+//   const playTrailer = () => {
+//     if (selectedMovie.videos) {
+//       const trailer = selectedMovie.videos.results.find(vid => vid.name === 'Official Trailer');
+//       if (trailer) {
+//         return (
+//           <YouTube videoId={trailer.key} />
+//         );
+//       }
+//     }
+//     return null;
+//   };
+  
 //   return (
-//     <div className='App'>
-//       <header>
+//     <div className="App">
+//       <header className='header'>
 //         <h1>The Movie Library</h1>
 
 //         <form onSubmit={searchMovies}>
-//           <input        
-//             type='text'   
-//             // value={filter.search ? filter.search : ''}
-//             autoComplete='off'
-//             name='search'
-//             placeholder='Search Movie'
-//             onChange={(ev) => setSearchKey(ev.target.value)}/>
-//           <button type={'submit'}>Search</button>
+//           <input
+//             type="text"
+//             autoComplete="off"
+//             name="search"
+//             placeholder="Search Movie"
+//             value={searchKey}
+//             onChange={(ev) => setSearchKey(ev.target.value)}
+//           />
+//           <button type="submit">Search</button>
 //         </form>
 //       </header>
-//       <div>
-//         <MovieCard />
-//         {/* <ShowCard /> */}
+//       <div className='hero' style={{backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`}}>
+//         <div className='main-info'>
+//           {runTrailer ? playTrailer() : null}
+//           <button className='trailer-play-button' onClick={() => setRunTrailer(true)}>Play</button>
+//           <h1 className='hero-movie-title'>{selectedMovie.title}</h1>
+//           <p className='hero-movie-overview'>{selectedMovie.overview ? selectedMovie.overview : null}</p>
+//         </div>
 //       </div>
-//       {/* {
-//         auth.id ? <Home /> : <Login />
-//       }
-//       {
-//         !!auth.id  && (
-//           <div>
-//             <nav>
-//               <Link to='/'>Home</Link>
-//             </nav>
-//           </div>
-//         )
-//       } */}
+//       <div >
+//         {/* {filtered.map((movie) => (
+//           <MovieCard key={movie.id} movie={movie} />
+//         ))} */}
+//         <MovieCard selectMovie = {setSelectedMovie} onMovieClick={handleMovieClick} />
+//       </div>
+//       <div className='trailer'>
+
+//       </div>
 //     </div>
 //   );
 // };
@@ -91,45 +116,43 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Home from './Home';
-import Login from './Login';
 import MovieCard from './MovieCard';
+import Footer from './Footer';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovies, fetchShows } from '../store';
-import { Link, Routes, Route, useParams } from 'react-router-dom';
-import YouTube from 'react-youtube';
+import Youtube from 'react-youtube';
 
 const App = () => {
   const { auth, movies, shows } = useSelector((state) => state);
-  const { filterString } = useParams();
   const API_URL = 'https://api.themoviedb.org/3';
   const IMAGE_PATH = 'https://image.tmdb.org/t/p/original';
-  const filter = filterString ? JSON.parse(filterString) : {};
+  // const filterString = useParams().filterString;
+  // const filter = filterString ? JSON.parse(filterString) : {};
   const dispatch = useDispatch();
+
   const [searchKey, setSearchKey] = useState('');
   const [selectedMovie, setSelectedMovie] = useState({});
-
-  const fetchMovie = async () => {
-    const {data} = await axios.get(`${API_URL}/${id}`, {
-      params: {
-        api_key: process.env.REACT_APP_MOVIE_API_KEY,
-      }
-    })
-  }
+  const [playingTrailer, setPlayingTrailer] = useState(false);
+  const [trailer, setTrailer] = useState(null);
 
   useEffect(() => {
     dispatch(fetchMovies());
     dispatch(fetchShows());
+
+    if (movies.length > 0) {
+      setSelectedMovie(movies[0]);
+      fetchTrailer(movies[0]);
+    }
   }, []);
 
   useEffect(() => {
     if (movies.length > 0) {
       setSelectedMovie(movies[0]);
-      console.log('Selected Movie:', movies[0]);
+      fetchTrailer(movies[0]);
     }
   }, [movies]);
 
-  const searchMovies = async (ev) => {
+    const searchMovies = async (ev) => {
     ev.preventDefault();
 
     try {
@@ -139,14 +162,74 @@ const App = () => {
     }
   }
 
-  const handleMovieClick = (movie) => {
+
+  const fetchTrailer = async (movie) => {
+    try {
+      const response = await axios.get(`${API_URL}/movie/${movie.id}/videos`, {
+        params: {
+          api_key: process.env.REACT_APP_MOVIE_API_KEY,
+        },
+      });
+
+      if (response.data.results.length > 0) {
+        setTrailer(response.data.results[0]);
+      } else {
+        setTrailer(null);
+      }
+    } catch (error) {
+      console.error('Error fetching trailer:', error);
+      setTrailer(null);
+    }
+  };
+
+  const handleMovieClick = async (movie) => {
     setSelectedMovie(movie);
-    console.log('Selected Movie', movie)
+    setPlayingTrailer(false);
+
+    try {
+      const response = await axios.get(`${API_URL}/movie/${movie.id}/videos`, {
+        params: {
+          api_key: process.env.REACT_APP_MOVIE_API_KEY,
+        },
+      });
+
+      const officialTrailer = response.data.results.find(vid => vid.name.includes('Official Trailer'));
+
+      if (officialTrailer) {
+        setTrailer(officialTrailer);
+      } else {
+        setTrailer(null);
+      }
+    } catch (error) {
+      console.error('Error fetching trailer:', error);
+      setTrailer(null);
+    }
+  };
+
+  const playTrailer = () => {
+    if (trailer) {
+      return (
+        <Youtube
+          videoId={trailer.key}
+          opts={{
+            width: '100%',
+            height: '620px',
+            playerVars: {
+              autoplay: 1,
+              controls: 1,
+              modestbranding: 1,
+              rel: 0,
+            },
+          }}
+        />
+      );
+    }
+    return null;
   };
 
   return (
     <div className="App">
-      <header className='header'>
+      <header className="header">
         <h1>The Movie Library</h1>
 
         <form onSubmit={searchMovies}>
@@ -161,26 +244,27 @@ const App = () => {
           <button type="submit">Search</button>
         </form>
       </header>
-      <div className='hero' style={{backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`}}>
-        <div className='main-info'>
-          {/* <img className='movie-backdrop' src={`${IMAGE_PATH}${selectedMovie.backdrop_path}`} alt=''/> */}
-          <YouTube
-
-          />
-          <button className='trailer-play-button'>Play</button>
-          <h1 className='hero-movie-title'>{selectedMovie.title}</h1>
-          <p className='hero-movie-overview'>{selectedMovie.overview ? selectedMovie.overview : null}</p>
+      <div 
+        className="hero" 
+        style={{ 
+          backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`,
+          backgroundAttachment: 'fixed',
+          backgroundSize: '100% 100%'
+        }}
+      >
+        <div className="main-info">
+          {playingTrailer && trailer ? playTrailer() : null}
+          <button className="trailer-play-button" onClick={() => setPlayingTrailer(true)}>
+            Play Trailer
+          </button>
+          <h1 className="hero-movie-title">{selectedMovie.title}</h1>
+          <p className="hero-movie-overview">{selectedMovie.overview ? selectedMovie.overview : null}</p>
         </div>
       </div>
-      <div >
-        {/* {filtered.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))} */}
+      <div>
         <MovieCard onMovieClick={handleMovieClick} />
       </div>
-      <div className='trailer'>
-
-      </div>
+      <Footer />
     </div>
   );
 };

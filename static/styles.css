@@ -45,9 +45,16 @@ nav {
 }
 
 .header {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0px;
+  /* margin-right: 100px;
+  margin-left: 100px; */
+  padding: 10px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
 }
 
 .movie-card {

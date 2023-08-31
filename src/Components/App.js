@@ -121,6 +121,7 @@ import Footer from './Footer';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovies, fetchShows } from '../store';
 import Youtube from 'react-youtube';
+import { Link } from 'react-router-dom'
 
 const App = () => {
   const { auth, movies, shows } = useSelector((state) => state);
@@ -230,8 +231,9 @@ const App = () => {
   return (
     <div className="App">
       <header className="header">
-        <h1>The Movie Library</h1>
-
+        <Link to='/'>
+          <h1>The Movie Library</h1>
+        </Link>
         <form onSubmit={searchMovies}>
           <input
             type="text"

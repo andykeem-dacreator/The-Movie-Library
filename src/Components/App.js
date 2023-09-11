@@ -33,7 +33,6 @@
 //     const data = await fetchMovie(movie.id);
 //     setSelectedMovie(data);
 //   };
-  
 
 //   useEffect(() => {
 //     dispatch(fetchMovies());
@@ -73,7 +72,7 @@
 //     }
 //     return null;
 //   };
-  
+
 //   return (
 //     <div className="App">
 //       <header className='header'>
@@ -114,24 +113,25 @@
 
 // export default App;
 
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import MovieCard from './MovieCard';
-import Footer from './Footer';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchMovies, fetchShows } from '../store';
-import Youtube from 'react-youtube';
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import "./styles.css";
+import axios from "axios";
+import MovieCard from "./MovieCard";
+import Footer from "./Footer";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchMovies, fetchShows } from "../store";
+import Youtube from "react-youtube";
+import { Link } from "react-router-dom";
 
 const App = () => {
-  const { auth, movies, shows } = useSelector((state) => state);
-  const API_URL = 'https://api.themoviedb.org/3';
-  const IMAGE_PATH = 'https://image.tmdb.org/t/p/original';
+  const { movies } = useSelector((state) => state);
+  const API_URL = "https://api.themoviedb.org/3";
+  const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
   // const filterString = useParams().filterString;
   // const filter = filterString ? JSON.parse(filterString) : {};
   const dispatch = useDispatch();
 
-  const [searchKey, setSearchKey] = useState('');
+  const [searchKey, setSearchKey] = useState("");
   const [selectedMovie, setSelectedMovie] = useState({});
   const [playingTrailer, setPlayingTrailer] = useState(false);
   const [trailer, setTrailer] = useState(null);
@@ -153,16 +153,15 @@ const App = () => {
     }
   }, [movies]);
 
-    const searchMovies = async (ev) => {
+  const searchMovies = async (ev) => {
     ev.preventDefault();
 
     try {
       dispatch(fetchMovies(searchKey));
     } catch (error) {
-      console.error('Error searching movies:', error);
+      console.error("Error searching movies:", error);
     }
-  }
-
+  };
 
   const fetchTrailer = async (movie) => {
     try {
@@ -178,7 +177,7 @@ const App = () => {
         setTrailer(null);
       }
     } catch (error) {
-      console.error('Error fetching trailer:', error);
+      console.error("Error fetching trailer:", error);
       setTrailer(null);
     }
   };
@@ -194,7 +193,9 @@ const App = () => {
         },
       });
 
-      const officialTrailer = response.data.results.find(vid => vid.name.includes('Official Trailer'));
+      const officialTrailer = response.data.results.find((vid) =>
+        vid.name.includes("Official Trailer")
+      );
 
       if (officialTrailer) {
         setTrailer(officialTrailer);
@@ -202,7 +203,7 @@ const App = () => {
         setTrailer(null);
       }
     } catch (error) {
-      console.error('Error fetching trailer:', error);
+      console.error("Error fetching trailer:", error);
       setTrailer(null);
     }
   };
@@ -213,8 +214,8 @@ const App = () => {
         <Youtube
           videoId={trailer.key}
           opts={{
-            width: '100%',
-            height: '620px',
+            width: "100%",
+            height: "620px",
             playerVars: {
               autoplay: 1,
               controls: 1,
@@ -231,7 +232,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="header">
-        <Link to='/'>
+        <Link to="/">
           <h1>The Movie Library</h1>
         </Link>
         <form onSubmit={searchMovies}>
@@ -246,21 +247,26 @@ const App = () => {
           <button type="submit">Search</button>
         </form>
       </header>
-      <div 
-        className="hero" 
-        style={{ 
+      <div
+        className="hero"
+        style={{
           backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`,
-          backgroundAttachment: 'fixed',
-          backgroundSize: '100% 100%'
+          backgroundAttachment: "fixed",
+          backgroundSize: "100% 100%",
         }}
       >
         <div className="main-info">
           {playingTrailer && trailer ? playTrailer() : null}
-          <button className="trailer-play-button" onClick={() => setPlayingTrailer(true)}>
+          <button
+            className="trailer-play-button"
+            onClick={() => setPlayingTrailer(true)}
+          >
             Play Trailer
           </button>
           <h1 className="hero-movie-title">{selectedMovie.title}</h1>
-          <p className="hero-movie-overview">{selectedMovie.overview ? selectedMovie.overview : null}</p>
+          <p className="hero-movie-overview">
+            {selectedMovie.overview ? selectedMovie.overview : null}
+          </p>
         </div>
       </div>
       <div>
